@@ -5,6 +5,7 @@ using UnityEngine;
 public class MovementController : MonoBehaviour
 {
     public CharacterController controller;
+    public GameObject viande;
     private float speed = 0.1f;
     public float hp = 100;
     private float points = 0;
@@ -21,8 +22,10 @@ public class MovementController : MonoBehaviour
         {
             Debug.Log("Total des points : " + points);
             gameObject.SetActive(false);
+            Instantiate(viande, gameObject.transform.position, gameObject.transform.rotation);
         }
         else {
+            if (hp > 200) hp = 200;
             points += 1 * Time.deltaTime;
             hp -= 1 * Time.deltaTime;
             float horizontal = Input.GetAxisRaw("Horizontal");
@@ -41,8 +44,14 @@ public class MovementController : MonoBehaviour
     {
         if(other.tag == "Vegetal")
         {
-            Debug.Log(other.gameObject.name + " m'a mangé.");
+            Debug.Log(other.gameObject.name + " mangé.");
             hp += 20;
+            other.gameObject.SetActive(false);
+        }
+        if (other.tag == "Viande")
+        {
+            Debug.Log(other.gameObject.name + " mangé.");
+            hp += 100;
             other.gameObject.SetActive(false);
         }
 
