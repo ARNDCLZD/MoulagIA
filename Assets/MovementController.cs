@@ -5,8 +5,13 @@ using UnityEngine;
 public class MovementController : MonoBehaviour
 {
     public CharacterController controller;
+    public GameObject cible;
     public GameObject viande;
     private float speed = 0.1f;
+
+    private float turnSmoothTime = 0.1f;
+    float turnSmoothVelocity;
+
     public float hp = 100;
     private float points = 0;
     // Start is called before the first frame update
@@ -28,6 +33,7 @@ public class MovementController : MonoBehaviour
             if (hp > 200) hp = 200;
             points += 1 * Time.deltaTime;
             hp -= 1 * Time.deltaTime;
+
             float horizontal = Input.GetAxisRaw("Horizontal");
             float vertical = Input.GetAxisRaw("Vertical");
             Vector3 direction = new Vector3(horizontal, 0f, vertical).normalized;
@@ -35,7 +41,8 @@ public class MovementController : MonoBehaviour
             if (direction.magnitude >= 0.1f)
             {
                 float angle = Mathf.Atan2(-direction.z, direction.x) * Mathf.Rad2Deg;
-                transform.rotation = Quaternion.Euler(0f, angle, 0f);
+                float target = Mathf.SmoothDampAngle(transform.eulerAngles.y, angle, ref turnSmoothVelocity, turnSmoothTime);
+                transform.rotation = Quaternion.Euler(0f, target, 0f);
                 controller.Move(direction * speed * (1 + Time.deltaTime));
             }
         }  
@@ -46,13 +53,13 @@ public class MovementController : MonoBehaviour
         {
             Debug.Log(other.gameObject.name + " mangé.");
             hp += 20;
-            other.gameObject.SetActive(false);
+            Destroy(other.gameObject);
         }
         if (other.tag == "Viande")
         {
             Debug.Log(other.gameObject.name + " mangé.");
             hp += 100;
-            other.gameObject.SetActive(false);
+            Destroy(other.gameObject);
         }
 
     }

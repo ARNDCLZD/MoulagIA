@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 2670726212440675502}
   m_Layer: 0
   m_Name: "Entit\xE9"
-  m_TagString: Untagged
+  m_TagString: "Entit\xE9"
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -65,8 +65,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0be8b1b0fd120484d9f452a7891a2a11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  viande: {fileID: 5450208634353092072, guid: 4377950a8442ee44faa596b44aae0d3e, type: 3}
   controller: {fileID: 2670726212440675536}
+  viande: {fileID: 5450208634353092072, guid: 4377950a8442ee44faa596b44aae0d3e, type: 3}
   hp: 10
 --- !u!136 &2670726212440675503
 CapsuleCollider:
