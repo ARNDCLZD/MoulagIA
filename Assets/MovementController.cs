@@ -7,17 +7,17 @@ public class MovementController : MonoBehaviour
     public CharacterController controller;
     public GameObject cible;
     public GameObject viande;
-    private float speed = 0.1f;
+    private float speed = 0.5f;
 
-    private float turnSmoothTime = 0.1f;
-    float turnSmoothVelocity;
+    public float rotationSpeed = 720;
 
     public float hp = 100;
     private float points = 0;
+
+    public Animator anim;
     // Start is called before the first frame update
     void Start()
     {
-        
     }
 
     // Update is called once per frame
@@ -37,14 +37,17 @@ public class MovementController : MonoBehaviour
             float horizontal = Input.GetAxisRaw("Horizontal");
             float vertical = Input.GetAxisRaw("Vertical");
             Vector3 direction = new Vector3(horizontal, 0f, vertical).normalized;
+            Debug.Log(direction.magnitude);
 
             if (direction.magnitude >= 0.1f)
             {
-                float angle = Mathf.Atan2(-direction.z, direction.x) * Mathf.Rad2Deg;
-                float target = Mathf.SmoothDampAngle(transform.eulerAngles.y, angle, ref turnSmoothVelocity, turnSmoothTime);
-                transform.rotation = Quaternion.Euler(0f, target, 0f);
+                anim.SetInteger("condition", 1);
                 controller.Move(direction * speed * (1 + Time.deltaTime));
-            }
+                //transform.forward = direction;
+                Quaternion toRotation = Quaternion.LookRotation(direction, Vector3.up);
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, rotationSpeed * (1+Time.deltaTime));
+
+            } else anim.SetInteger("condition", 0);
         }  
     }
     private void OnTriggerEnter(Collider other)
